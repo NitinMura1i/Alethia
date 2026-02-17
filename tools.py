@@ -114,6 +114,23 @@ TOOLS = [
                 "required": ["phone"]
             }
         }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "search_knowledge_base",
+            "description": "Search the company knowledge base for answers to customer questions about policies, procedures, preparation guides, FAQs, warranties, and other company information. Use this whenever a customer asks a question that isn't about scheduling or pricing.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "The search query based on what the customer is asking about, e.g. 'warranty policy', 'how to prepare for HVAC appointment', 'payment methods accepted'"
+                    }
+                },
+                "required": ["query"]
+            }
+        }
     }
 ]
 
@@ -246,6 +263,18 @@ def book_appointment(customer_name, address, phone, service_category, issue_desc
     return booking
 
 
+def search_knowledge_base(query):
+    """Search the knowledge base for relevant information."""
+    from knowledge_base import search_knowledge
+    results = search_knowledge(query, top_k=3)
+    return {
+        "results": [
+            {"content": r["content"], "source": r["source"]}
+            for r in results
+        ]
+    }
+
+
 def lookup_customer(phone):
     """Look up a customer and their booking history."""
     from database import get_customer
@@ -268,6 +297,7 @@ TOOL_FUNCTIONS = {
     "get_price_estimate": get_price_estimate,
     "book_appointment": book_appointment,
     "lookup_customer": lookup_customer,
+    "search_knowledge_base": search_knowledge_base,
 }
 
 
