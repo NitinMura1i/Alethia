@@ -102,7 +102,8 @@ def main():
     # Check if this is a returning customer by loading past conversation
     past_messages = get_conversation_history(customer_phone)
     if past_messages:
-        print(f"\n  [Returning customer detected - loading {len(past_messages)} previous messages]\n")
+        print(
+            f"\n  [Returning customer detected - loading {len(past_messages)} previous messages]\n")
         # Add a summary context message so the agent knows about the history
         history_summary = {"role": "system", "content": (
             "The following messages are from a previous conversation with this customer. "
@@ -135,6 +136,7 @@ def main():
         response = chat(conversation_history, customer_phone)
 
         print(f"\nAgent: {response}\n")
+
 
 if __name__ == "__main__":
     main()
